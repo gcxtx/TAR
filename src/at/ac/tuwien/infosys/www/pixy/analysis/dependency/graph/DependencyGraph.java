@@ -157,7 +157,7 @@ public class DependencyGraph {
      *
      * Iff the given place is a literal: Returns dgn (a literal has no further dependencies), ends recursion.
      *
-     * Gets the dependency value of the given place at the given cfg node. The dependency value is basically a set of
+     * gets the dependency value of the given place at the given cfg node. The dependency value is basically a set of
      * cfg nodes at which the value of the place was modified.
      *
      * For each of these dependencies:

@@ -49,7 +49,7 @@ public final class Dumper {
 
     // dumps the parse tree in dot syntax to the directory specified
     // by "path" and the file specified by "filename"
-    static void dumpDot(ParseTree parseTree, String path, String filename) {
+    static public void dumpDot(ParseTree parseTree, String path, String filename) {
 
         // create directory
         (new File(path)).mkdir();

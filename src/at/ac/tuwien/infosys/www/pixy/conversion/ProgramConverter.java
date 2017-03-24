@@ -409,6 +409,14 @@ public class ProgramConverter {
         // EFF: only needed for functional analyses
         baseTac.assignReversePostOrder();
     }
+    
+    /**
+     * get the parse tree of the file
+     * [FIXME]
+     */
+    public ParseTree getParseTree() {
+    	return this.parse(MyOptions.entryFile.getPath());
+    }
 
     /**
      * Converts the entry file and sets baseTac.

@@ -37,6 +37,7 @@ public class MyOptions {
     public static boolean optionW = false;
     public static boolean optionV = false;
     public static boolean option_V = true;
+    public static boolean option_TAR = false;
 
     // count paths in depgraphs?
     public static boolean countPaths = false;

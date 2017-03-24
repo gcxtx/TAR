@@ -120,7 +120,8 @@ public class State implements Serializable, Comparable<State> {
      */
     Transition[] getSortedTransitionArray(boolean to_first) {
         Transition[] e = transitions.toArray(new Transition[0]);
-        Arrays.sort(e, new TransitionComparator(to_first));
+        //[FIXME]
+        //Arrays.sort(e, new TransitionComparator(to_first));
         return e;
     }
 

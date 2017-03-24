@@ -1,8 +1,10 @@
 package at.ac.tuwien.infosys.www.pixy;
 
+import at.ac.tuwien.infosys.www.phpparser.ParseTree;
 import at.ac.tuwien.infosys.www.pixy.analysis.dependency.DependencyAnalysis;
 import at.ac.tuwien.infosys.www.pixy.analysis.dependency.Sink;
 import at.ac.tuwien.infosys.www.pixy.analysis.dependency.graph.*;
+import at.ac.tuwien.infosys.www.pixy.conversion.ProgramConverter;
 import at.ac.tuwien.infosys.www.pixy.conversion.TacActualParameter;
 import at.ac.tuwien.infosys.www.pixy.conversion.TacFunction;
 import at.ac.tuwien.infosys.www.pixy.conversion.cfgnodes.AbstractCfgNode;
@@ -10,6 +12,7 @@ import at.ac.tuwien.infosys.www.pixy.conversion.cfgnodes.CallBuiltinFunction;
 import at.ac.tuwien.infosys.www.pixy.conversion.cfgnodes.CallPreparation;
 import at.ac.tuwien.infosys.www.pixy.conversion.cfgnodes.Echo;
 import at.ac.tuwien.infosys.www.pixy.sanitation.AbstractSanitationAnalysis;
+import main.JAnalyzer;
 
 import java.util.*;
 
@@ -71,7 +74,39 @@ public class XssAnalysis extends AbstractVulnerabilityAnalysis {
         for (Sink sink : sinks) {
             detectVulnerabilitiesForSink(sink2Graph, quickReport, fileName, sink);
         }
-
+        
+        boolean tar = MyOptions.option_TAR;
+        System.out.println("TAR is " + (tar? "enabled" : "disabled"));
+        
+        //System.out.println("Checking sink " + sinks.get(sinks.size() - 1).getLineNumber());
+        
+        ParseTree parseTree = Checker.programConverter.getParseTree();
+        
+        if (tar) {
+	        System.out.println("\n\n\n>>>>>>>>>>>>>>>>>>>>>");
+			System.out.println("Taint analysis refinement begins");
+			boolean validBug = true;
+			try {
+				Set<Integer> sinkSet = new HashSet<Integer>();
+				sinkSet.add(sinks.get(sinks.size() - 1).getLineNumber());
+				validBug = JAnalyzer.analyze(fileName, parseTree, sinkSet);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (validBug) {
+				System.out.println("\n*****The vulnerabilty is valid.\n");
+			} else {
+				System.out.println("\n*****The vulnerabilty is spurious.\n");
+				if (vulnerabilityCount > 0) vulnerabilityCount --;
+			}
+			
+			
+			System.out.println("Taint analysis refinement ends");
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>\n\n\n");
+        }
+        
         // initial sink count and final graph count may differ (e.g., if some sinks
         // are not reachable)
         if (MyOptions.optionV) {

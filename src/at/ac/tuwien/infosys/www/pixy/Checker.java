@@ -47,6 +47,9 @@ public final class Checker {
     public GenericTaintAnalysis gta;
 
     InclusionDominatorAnalysis inclusionDominatorAnalysis;
+    
+    // [FIXME]
+    public static ProgramConverter programConverter;
 
 //  ********************************************************************************
 //  MAIN ***************************************************************************
@@ -115,6 +118,7 @@ public final class Checker {
         MyOptions.optionW = commandLine.hasOption("w");
         MyOptions.optionV = commandLine.hasOption("v");
         MyOptions.option_V = !commandLine.hasOption("V");
+        MyOptions.option_TAR = commandLine.hasOption("tar");
 
         // inform MyOptions about the analyses that are to be performed
         if (!MyOptions.setAnalyses(commandLine.getOptionValue("y"))) {
@@ -151,8 +155,10 @@ public final class Checker {
         long startTime = System.currentTimeMillis();
 
         // convert the whole program (with file inclusions)
-        ProgramConverter programConverter = checker.initialize();
+        programConverter = checker.initialize();
+
         TacConverter tac = programConverter.getTac();
+        //printParseTreeInDotSyntax(programConverter);
 
         // params: tac, functional?, desired analyses
         checker.analyzeTaint(tac, !MyOptions.optionA);
@@ -174,8 +180,8 @@ public final class Checker {
 
         if (!MyOptions.optionB) {
             long endTime = System.currentTimeMillis();
-            long diffTime = (endTime - startTime) / 1000;
-            System.out.println("Total Time: " + diffTime + " seconds");
+            long diffTime = (endTime - startTime);
+            System.out.println("Total Time: " + diffTime + " mini seconds");
             System.out.println();
             System.out.println();
         }
@@ -207,6 +213,7 @@ public final class Checker {
         commandLineOptions.addOption("v", "verbose", false, "enable verbose output");
         commandLineOptions.addOption("V", "verbosegraphs", false, "disable verbose depgraphs");
         commandLineOptions.addOption("y", "analysistype", true, "type of taint analysis (" + MyOptions.getAnalysisNames() + ")");
+        commandLineOptions.addOption("tar", "refine", false, "refine the taint analysis with constraints");
 
         return commandLineOptions;
     }
@@ -372,7 +379,8 @@ public final class Checker {
         return programConverter;
     }
 
-    private void printParseTreeInDotSyntax(ProgramConverter programConverter) {
+    // [FIXME] changed into public static void from private void
+    public static void printParseTreeInDotSyntax(ProgramConverter programConverter) {
         ParseTree parseTree = programConverter.parse(MyOptions.entryFile.getPath());
         Dumper.dumpDot(parseTree, MyOptions.graphPath, "parseTree");
         System.exit(0);

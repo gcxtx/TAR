@@ -25,7 +25,7 @@ public class MyAlphabet { private Set<Character> alphabet;
     }
 
     /**
-     * Gets a copy of the alphabet.
+     * gets a copy of the alphabet.
      *
      * @return a copy of the alphabet
      */

@@ -118,7 +118,7 @@ public class BuiltinFunctions {
         allBuiltinFunctions.add("ArrayObject::count");
         allBuiltinFunctions.add("ArrayObject::getIterator");
         allBuiltinFunctions.add("ArrayObject::offsetExists");
-        allBuiltinFunctions.add("ArrayObject::offsetGet");
+        allBuiltinFunctions.add("ArrayObject::offsetget");
         allBuiltinFunctions.add("ArrayObject::offsetSet");
         allBuiltinFunctions.add("ArrayObject::offsetUnset");
         allBuiltinFunctions.add("arsort");

@@ -288,7 +288,7 @@ public class Automaton
     }
 
     /**
-     * Gets initial state.
+     * gets initial state.
      *
      * @return state
      */
@@ -540,7 +540,7 @@ public class Automaton
     }
 
     /**
-     * Gets sorted array of all interval start points.
+     * gets sorted array of all interval start points.
      */
     char[] getStartPoints() {
         Set<Character> pointset = new HashSet<>();
